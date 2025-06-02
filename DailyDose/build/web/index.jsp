@@ -38,7 +38,7 @@
             <div class="card weather-card">
                 <h3>Current Weather</h3>
                 <p id="weather">Detecting your location...</p>
-                <form action="weather" method="post" class="refresh-form">
+                <form action="weather.jsp" method="post" class="refresh-form">
                     <button type="submit" class="refresh-btn">Search Location....</button>
                 </form>
 

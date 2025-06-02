@@ -2,11 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+
 package model;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URLEncoder;
 import java.net.URL;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,18 +16,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewsBean {
-
-    private static final String API_KEY = "YOUR_GNEWS_API_KEY";
+    private static final String API_KEY = "355688773bbb194f30bdca5f355de288";
     private List<NewsArticle> articles;
 
+    // Default constructor (top headlines in English)
     public NewsBean() {
-        fetchNews();
+        fetchNews("latest", "en", "my");
     }
 
-    private void fetchNews() {
+    // Overloaded constructor for custom search
+    public NewsBean(String keyword, String language, String country) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            keyword = "latest"; // fallback if no keyword
+        }
+        if (language == null || language.isEmpty()) {
+            language = "en";
+        }
+        if (country == null || country.isEmpty()) {
+            country = "my";
+        }
+        fetchNews(keyword, language, country);
+    }
+
+    private void fetchNews(String keyword, String language, String country) {
         articles = new ArrayList<>();
         try {
-            String apiUrl = "https://gnews.io/api/v4/top-headlines?lang=en&token=" + API_KEY;
+            keyword = URLEncoder.encode(keyword, "UTF-8");
+            String apiUrl = "https://gnews.io/api/v4/search?q=" + keyword +
+                    "&lang=" + language +
+                    "&country=" + country +
+                    "&max=5&token=" + API_KEY;
 
             URL url = new URL(apiUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -36,7 +56,6 @@ public class NewsBean {
             );
             String inputLine;
             StringBuilder response = new StringBuilder();
-
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
@@ -54,9 +73,8 @@ public class NewsBean {
 
                 articles.add(new NewsArticle(title, source, publishedAt, urlLink));
             }
-
         } catch (Exception e) {
-            // Handle error: add placeholder article
+            e.printStackTrace();
             articles.add(new NewsArticle("Unable to fetch news", "", "", "#"));
         }
     }
