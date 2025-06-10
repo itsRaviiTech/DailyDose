@@ -27,6 +27,7 @@
             <h1 class="app-title">DailyDose</h1>
 
             <%-- Advice Card --%>
+                        <%-- Advice Card --%>
             <div class="card advice-card">
                 <p class="advice-text">“<%= adviceBean.getAdvice()%>”</p>
                 <form method="get" class="refresh-form">
