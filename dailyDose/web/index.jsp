@@ -15,6 +15,10 @@
     WeatherBean weatherBean = new WeatherBean(); // Use default city or modify constructor to accept city
     NewsBean newsBean = new NewsBean();
     java.util.List<NewsArticle> articles = newsBean.getArticles();
+    
+    // Fetch advice for homepage (filtered by category, default to 'inspire')
+    String category = "inspire"; // Set to default category 'inspire'
+    String advice = adviceBean.getAdviceByCategory(category); // Assuming this function handles category-based advice
 %>
 <html>
     <head>
@@ -22,16 +26,15 @@
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles.css" />
     </head>
     <body>
+        <jsp:include page="header.jsp" />
         <div class="container">
-
             <h1 class="app-title">DailyDose</h1>
 
-            <%-- Advice Card --%>
-                        <%-- Advice Card --%>
+            <%-- Advice Card from adviceSlip.jsp --%>
             <div class="card advice-card">
-                <p class="advice-text">“<%= adviceBean.getAdvice()%>”</p>
-                <form method="get" class="refresh-form">
-                    <button type="submit" class="refresh-btn">Refresh Advice</button>
+                <p class="advice-text">“<%= advice %>”</p>
+                <form method="get" action="adviceSlip.jsp">
+                    <button type="submit" class="refresh-btn">See More Advice</button>
                 </form>
             </div>
 
@@ -42,7 +45,6 @@
                 <form action="weather.jsp" method="post" class="refresh-form">
                     <button type="submit" class="refresh-btn">Search Location....</button>
                 </form>
-
             </div>
 
             <%-- News Card --%>
@@ -59,14 +61,9 @@
                     <% }%>
                 </ul>
             </div>
-        </div>
-
-        <%-- Bottom Navigation Bar --%>
-        <nav class="bottom-nav">
-            <a href="index.jsp" class="nav-link active">Home</a>
-            <a href="weather.jsp" class="nav-link">Weather</a>
-            <a href="news.jsp" class="nav-link">News</a>
-        </nav>
+        </div>        
         <script src="currentGeoLocation.js"></script>
+        <jsp:include page="footer.jsp" />
     </body>
 </html>
+
