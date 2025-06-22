@@ -36,6 +36,9 @@
                 </form>
             </div>
 
+                <div class="card joke-card">
+                    <p>Having a bad day? <a href="joke.jsp">Click Me!</a></p>
+                </div>
             <%-- Weather Card --%>
             <div class="card weather-card">
                 <h3>Current Weather</h3>
