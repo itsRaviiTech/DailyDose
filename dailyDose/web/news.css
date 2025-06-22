@@ -16,20 +16,20 @@ body {
     background-size: auto;
     font-family: 'Montserrat', sans-serif;
     min-height: 100vh;
-    padding: 2em 1em;
+    /*padding: 2em 1em;*/
 }
 
 .page-wrapper {
-    width: 100%;
     max-width: 960px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 2em;
+    padding-bottom: 4em;
 }
 
 .main-container {
-    width: 100%;
+
     max-width: 900px;
     background: linear-gradient(to bottom, #c8e5ff 0%, #eaf4ff 50%, #ffffff 100%);
     border-radius: 20px;
@@ -139,7 +139,7 @@ h1, h2, h3 {
 }
 
 .app-header-card {
-    background: #ffffff;
+    background: #d1ebff;
     border-radius: 1em;
     padding: 2em;
     margin-bottom: 2em;

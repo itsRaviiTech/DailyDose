@@ -20,7 +20,7 @@
         <span>News</span>
     </a>
     <a href="todo.jsp" class="nav-item">
-        <i class="fas fa-newspaper"></i>
+        <i class="fas fa-tasks"></i>
         <span>add task</span>
-    </a>
+    </a>    
 </footer>

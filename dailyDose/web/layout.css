@@ -50,6 +50,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     bottom: 0;
     width: 100%;
     z-index: 99;
+    margin: 0 auto;
 }
 
 .footer-nav .nav-item {
@@ -63,6 +64,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     display: block;
     font-size: 1.3rem;
     margin-bottom: 0.2em;
+    margin: 0 auto;
 }
 
 .footer-nav .nav-item:hover {

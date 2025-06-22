@@ -103,10 +103,10 @@
                     }%>
                 </div>
 
-                <!-- Back Button -->
+<!--                 Back Button 
                 <form action="index.jsp">
                     <input type="submit" value="⏪ Back to Home" class="back-btn" />
-                </form>
+                </form>-->
             </div>
         </div>
         <!-- JS for tab switching -->

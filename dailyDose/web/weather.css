@@ -7,7 +7,7 @@ body {
     background-size: auto;
     font-family: 'Montserrat', sans-serif;
     min-height: 100vh;
-    padding: 2em 1em;
+    /*padding: 2em 1em;*/
 }
 
 *, *::before, *::after {
@@ -21,6 +21,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 2em;
+    padding-bottom: 4em;
 }
 
 .main-container {
@@ -30,21 +31,11 @@ body {
     padding: 2em;
     background: linear-gradient(to bottom, #c8e5ff 0%, #eaf4ff 50%, #ffffff 100%);
     border-radius: 1em;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
     overflow: hidden; /* ⬅ Prevent any internal content from pushing width */
 }
 
-.app-header {
-    text-align: center;
-    margin-bottom: 2em;
-}
 
-.app-header h1 {
-    font-family: 'Poppins', sans-serif;
-    font-size: 2em;
-    margin-bottom: 0.2em;
-    color: #3a3a3a;
-}
 
 .subtitle {
     font-size: 1em;
@@ -134,8 +125,20 @@ body {
     cursor: pointer;
 }
 
+.app-header {
+    text-align: center;
+    margin-bottom: 2em;
+}
+
+.app-header h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2em;
+    margin-bottom: 0.2em;
+    color: #3a3a3a;
+}
+
 .app-header-card {
-    background: #ffffff;
+    background: #d1ebff;
     border-radius: 1em;
     padding: 2em;
     margin-bottom: 2em;
