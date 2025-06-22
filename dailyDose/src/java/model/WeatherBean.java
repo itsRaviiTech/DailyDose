@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 public class WeatherBean {
 
@@ -19,6 +20,7 @@ public class WeatherBean {
     private String windSpeed;
     private String humidity;
     private String weatherDesc;
+    private String icon;
 
     public WeatherBean() {
         // Default city for demo
@@ -57,19 +59,47 @@ public class WeatherBean {
             this.humidity = obj.getJSONObject("main").getInt("humidity") + "%";
             this.windSpeed = obj.getJSONObject("wind").getDouble("speed") + " m/s";
             this.weatherDesc = obj.getJSONArray("weather").getJSONObject(0).getString("description");
+            
+            JSONArray weatherArray = obj.getJSONArray("weather");
+            this.icon =  weatherArray.getJSONObject(0).getString("icon");
+            
 
         } catch (Exception e) {
             this.temperature = "--";
             this.humidity = "--";
             this.windSpeed = "--";
             this.weatherDesc = "Unable to fetch weather";
+            this.icon = ""; // fallback to empty string if fetch fails
         }
     }
 
     // Getters
-    public String getCity() { return city; }
-    public String getTemperature() { return temperature; }
-    public String getHumidity() { return humidity; }
-    public String getWindSpeed() { return windSpeed; }
-    public String getWeatherDesc() { return weatherDesc; }
+    public String getCity() { 
+        return city; 
+    }
+    
+    public String getTemperature() { 
+        return temperature; 
+    }
+    
+    public String getHumidity() { 
+        return humidity; 
+    }
+    
+    public String getWindSpeed() { 
+        return windSpeed; 
+    }
+    
+    public String getWeatherDesc() {
+        return weatherDesc;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+    
+     public String getIconUrl() {
+        return "https://openweathermap.org/img/wn/" + icon + "@2x.png";
+    }
+     
 }

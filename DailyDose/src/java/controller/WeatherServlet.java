@@ -38,7 +38,7 @@ public class WeatherServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String lat = request.getParameter("lat");
         String lon = request.getParameter("lon");
 
@@ -62,7 +62,7 @@ public class WeatherServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String lat = request.getParameter("lat");
         String lon = request.getParameter("lon");
 
@@ -109,20 +109,26 @@ public class WeatherServlet extends HttpServlet {
 
             JSONObject main = obj.getJSONObject("main");
             JSONObject wind = obj.getJSONObject("wind");
+            JSONArray weatherArray = obj.getJSONArray("weather");
+            JSONObject weather = weatherArray.getJSONObject(0);
 
             //if the city not found or invalid city
             double temp = main.getDouble("temp");
             int humidity = main.getInt("humidity");
+            String iconCode = weather.getString("icon"); // ✅ get icon code
             String description = obj.getJSONArray("weather").getJSONObject(0).getString("description");
 
             double windSpeed = wind.getDouble("speed");
+
+            // Prepare full icon URL (you can also do this in JSP)
+            String iconUrl = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png";
 
             request.setAttribute("city", city);
             request.setAttribute("temp", temp);
             request.setAttribute("humidity", humidity);
             request.setAttribute("windSpeed", windSpeed);
             request.setAttribute("description", description);
-
+            request.setAttribute("iconUrl", iconUrl);
             request.setAttribute("submitValue", submitValue);
             request.getRequestDispatcher("weather.jsp").forward(request, response);
         } catch (Exception e) {

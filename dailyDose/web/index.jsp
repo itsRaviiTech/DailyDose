@@ -21,7 +21,7 @@
         <title>DailyDose - Home</title>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles.css" />
     </head>
-    <body>
+    <body id="page-index">
         <div class="container">
 
             <h1 class="app-title">DailyDose</h1>
@@ -30,6 +30,7 @@
                         <%-- Advice Card --%>
             <div class="card advice-card">
                 <p class="advice-text">“<%= adviceBean.getAdvice()%>”</p>
+                
                 <form method="get" class="refresh-form">
                     <button type="submit" class="refresh-btn">Refresh Advice</button>
                 </form>
@@ -39,10 +40,7 @@
             <div class="card weather-card">
                 <h3>Current Weather</h3>
                 <p id="weather">Detecting your location...</p>
-                <form action="weather.jsp" method="post" class="refresh-form">
-                    <button type="submit" class="refresh-btn">Search Location....</button>
-                </form>
-
+                <button type="button" id="unitConvert" class="refresh-btn"></button>
             </div>
 
             <%-- News Card --%>
@@ -61,12 +59,12 @@
             </div>
         </div>
 
-        <%-- Bottom Navigation Bar --%>
+        
         <nav class="bottom-nav">
             <a href="index.jsp" class="nav-link active">Home</a>
             <a href="weather.jsp" class="nav-link">Weather</a>
             <a href="news.jsp" class="nav-link">News</a>
         </nav>
-        <script src="currentGeoLocation.js"></script>
+                <script src="index.js"></script>
     </body>
 </html>

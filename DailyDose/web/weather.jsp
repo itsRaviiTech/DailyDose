@@ -57,10 +57,22 @@
             .info_box p {
                 margin: 0.5em 2em;
             }
+
+            #searchedWeather {
+                position: relative;
+            }
+
+            #unitConvert {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                font-size: 0.8rem;
+                padding: 0.25rem 0.5rem;
+            }
         </style>
     </head>
 
-    <body class="container mt-3">
+    <body id="page-weather" class="container mt-3">
         <%
             boolean invalidCityMsg = request.getAttribute("invalidCityMsg") != null;
             boolean errorMsg = request.getAttribute("errorMsg") != null;
@@ -79,29 +91,52 @@
                 <%
                     }
                 %>
-                <input class="input_Search" type="submit" name="submit" value="search">
+                <input class="input_Search" type="submit" name="submit" value="search">   
             </form>
+
             <%
                 if ("search".equals(request.getAttribute("submitValue"))) {
             %>
             <!-- Weather result box -->
-            <div class="info_box w-50 mx-auto mt-4 p-3">
+            <div id="searchedWeather" class="info_box w-50 mx-auto mt-4 p-3 position-relative">
                 <p><strong>Weather Result</strong></p>
                 <p>City: <span><%= request.getAttribute("city")%></span></p>
                 <p>Temperature: <span><%= request.getAttribute("temp")%>°C</span></p>
                 <p>Wind Speed: <span><%= request.getAttribute("windSpeed")%> m/s</span></p>
                 <p>Humidity: <span><%= request.getAttribute("humidity")%>%</span></p>
                 <p>Condition: <span><%= request.getAttribute("description")%></span></p>
+                <%
+                    String iconUrl = (String) request.getAttribute("iconUrl");
+                    String desc = (String) request.getAttribute("description");
+
+                    if (iconUrl != null && !iconUrl.isEmpty()) {
+                %>
+                <img  style="width:100px; height:100px;" src="<%= iconUrl%>" alt="<%= desc%>" />
+                <%
+                    }
+                %>
             </div>
-            <%
-                }
-            %>
+
+            <canvas
+                id="weatherChart"
+                data-city="<%= request.getAttribute("city")%>"
+                data-temp="<%=request.getAttribute("temp")%>"
+                data-humidity="<%= request.getAttribute("humidity")%>"
+                data-wind="<%= request.getAttribute("windSpeed")%>"
+                width="100"
+                height="75"
+                ></canvas>
+                <%
+                    }
+                %>
 
             <%
                 if (errorMsg) {
             %>
-            <p class="bg-danger"><strong><%= request.getAttribute("errorMsg")%><strong></p>
-            <%}%>
+            <p class="bg-danger"><strong><%= request.getAttribute("errorMsg")%></strong></p>
+                    <%}%>
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="customeWeatherFetcher.js"></script>
     </body>
 </html>
