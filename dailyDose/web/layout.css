@@ -1,0 +1,70 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 22 Jun 2025, 11:23:50 pm
+    Author     : ravib
+*/
+
+/* layout.css */
+
+/* ---------- HEADER ---------- */
+.app-header-wrapper {
+    max-width: 900px;
+    margin: 2em auto;
+    padding: 0 1em;
+}
+
+.app-header-bubble {
+    background: #ffffff;
+    border-radius: 1em;
+    padding: 2em;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.app-header-bubble h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2em;
+    margin: 0;
+    color: #222;
+}
+
+.app-header-bubble .subtitle {
+    font-size: 1em;
+    margin-top: 0.5em;
+    color: #555;
+}
+
+/* ---------- FOOTER ---------- */
+.footer-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.8em 0;
+    background: #f0f8ff;
+    border-top: 1px solid #ccc;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 99;
+}
+
+.footer-nav .nav-item {
+    text-align: center;
+    color: #1e4e8c;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.footer-nav .nav-item i {
+    display: block;
+    font-size: 1.3rem;
+    margin-bottom: 0.2em;
+}
+
+.footer-nav .nav-item:hover {
+    color: #0c3c75;
+}

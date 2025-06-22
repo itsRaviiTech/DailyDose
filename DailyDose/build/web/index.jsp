@@ -32,7 +32,7 @@
 <html>
     <head>
         <title>DailyDose - Home</title>
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css" />
+        <link rel="stylesheet" type="text/css" href="styles.css" />
     </head>
     <body id="page-index">
         <div class="container">
