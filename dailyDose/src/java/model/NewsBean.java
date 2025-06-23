@@ -18,6 +18,7 @@ import java.util.List;
 public class NewsBean {
 
     private static final String API_KEY = "355688773bbb194f30bdca5f355de288";
+    private static final String API_KEY1 = "dd7b2c3e832da4f8483199348aaeaca2";
     private List<NewsArticle> articles;
     //for data processing stuff
     private Map<String, List<NewsArticle>> groupedBySource;
@@ -47,55 +48,68 @@ public class NewsBean {
         groupedBySource = new HashMap<>();
         keywordFrequency = new HashMap<>();
 
-        try {
-            keyword = URLEncoder.encode(keyword, "UTF-8");
-            String apiUrl = "https://gnews.io/api/v4/search?q=" + keyword
-                    + "&lang=" + language
-                    + "&country=" + country
-                    + "&max=10&token=" + API_KEY;
+        String[] apiKeys = {API_KEY, API_KEY1};
 
-            URL url = new URL(apiUrl);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
+        for (String apiKey : apiKeys) {
+            try {
+                keyword = URLEncoder.encode(keyword, "UTF-8");
+                String apiUrl = "https://gnews.io/api/v4/search?q=" + keyword
+                        + "&lang=" + language
+                        + "&country=" + country
+                        + "&max=10&token=" + apiKey;
 
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream())
-            );
-            StringBuilder response = new StringBuilder();
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
+                URL url = new URL(apiUrl);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
 
-            JSONObject obj = new JSONObject(response.toString());
-            JSONArray newsArray = obj.getJSONArray("articles");
+                int responseCode = conn.getResponseCode();
+                if (responseCode == 429) {
+                    // Quota exceeded, try next key
+                    continue;
+                }
 
-            for (int i = 0; i < Math.min(newsArray.length(), 10); i++) {
-                JSONObject item = newsArray.getJSONObject(i);
-                String title = item.getString("title");
-                String source = item.getJSONObject("source").getString("name");
-                String publishedAt = item.getString("publishedAt").split("T")[0];
-                String urlLink = item.getString("url");
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream())
+                );
+                StringBuilder response = new StringBuilder();
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
 
-                NewsArticle article = new NewsArticle(title, source, publishedAt, urlLink);
-                articles.add(article);
+                JSONObject obj = new JSONObject(response.toString());
+                JSONArray newsArray = obj.getJSONArray("articles");
 
-                // --- GROUPING ---
-                groupedBySource.computeIfAbsent(source, k -> new ArrayList<>()).add(article);
+                for (int i = 0; i < Math.min(newsArray.length(), 10); i++) {
+                    JSONObject item = newsArray.getJSONObject(i);
+                    String title = item.getString("title");
+                    String source = item.getJSONObject("source").getString("name");
+                    String publishedAt = item.getString("publishedAt").split("T")[0];
+                    String urlLink = item.getString("url");
 
-                // --- KEYWORD COUNT ---
-                String[] words = title.toLowerCase().split("\\W+");
-                for (String word : words) {
-                    if (word.length() > 2 && !isStopWord(word)) {
-                        keywordFrequency.put(word, keywordFrequency.getOrDefault(word, 0) + 1);
+                    NewsArticle article = new NewsArticle(title, source, publishedAt, urlLink);
+                    articles.add(article);
+
+                    groupedBySource.computeIfAbsent(source, k -> new ArrayList<>()).add(article);
+
+                    String[] words = title.toLowerCase().split("\\W+");
+                    for (String word : words) {
+                        if (word.length() > 2 && !isStopWord(word)) {
+                            keywordFrequency.put(word, keywordFrequency.getOrDefault(word, 0) + 1);
+                        }
                     }
                 }
-            }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            articles.add(new NewsArticle("Unable to fetch news", "", "", "#"));
+                break; // If successful, stop trying further keys
+
+            } catch (Exception e) {
+                // Only add error article if it's the last key
+                if (apiKey.equals(API_KEY1)) {
+                    e.printStackTrace();
+                    articles.add(new NewsArticle("Unable to fetch news", "", "", "#"));
+                }
+            }
         }
     }
 

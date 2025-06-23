@@ -11,102 +11,103 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="news.css" />
+        <link rel="stylesheet" href="layout.css" />
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
         <title>DailyDose - News</title>
     </head>
     <body>
-        <div class="main-container">
-            <header class="app-header">
+        <div class="page-wrapper">
+            <div class="app-header-card">
                 <h1><i class="fas fa-newspaper"></i> DailyDose News</h1>
                 <p class="subtitle">Curated headlines. Clean design. Powered by you.</p>
-            </header>
+            </div>
+            <div class="main-container">
+                <!-- Trending Keywords -->
+                <div class="section">
+                    <h2><i class="fas fa-fire"></i> Trending Keywords</h2>
+                    <div class="keywords">
+                        <% for (String word : topKeywords) {%>
+                        <span class="keyword-chip">#<%= word%></span>
+                        <% } %>
+                    </div>
 
+                    <!-- Trigger Button -->
+                    <div class="floating-search-trigger" onclick="toggleSearchModal()">
+                        <i class="fas fa-search"></i> Search Articles
+                    </div>
 
-            <!-- Trending Keywords -->
-            <div class="section">
-                <h2><i class="fas fa-fire"></i> Trending Keywords</h2>
-                <div class="keywords">
-                    <% for (String word : topKeywords) {%>
-                    <span class="keyword-chip">#<%= word%></span>
-                    <% } %>
-                </div>
-
-                <!-- Trigger Button -->
-                <div class="floating-search-trigger" onclick="toggleSearchModal()">
-                    <i class="fas fa-search"></i> Search Articles
-                </div>
-
-                <!-- Modal -->
-                <div class="floating-search-modal" id="searchModal">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <input type="text" id="searchInput" placeholder="Type to search..." oninput="filterArticles()" />
-                            <button class="close-btn" onclick="toggleSearchModal()">×</button>
+                    <!-- Modal -->
+                    <div class="floating-search-modal" id="searchModal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <input type="text" id="searchInput" placeholder="Type to search..." oninput="filterArticles()" />
+                                <button class="close-btn" onclick="toggleSearchModal()">×</button>
+                            </div>
+                            <div id="searchResults"></div>
                         </div>
-                        <div id="searchResults"></div>
+                    </div>
+
+
+
+                </div>
+
+                <!-- Top Headlines -->
+                <div class="section">
+                    <h2><i class="fas fa-globe"></i> Top Headlines</h2>
+                    <div class="headlines">
+                        <% for (NewsBean.NewsArticle article : articles) {%>
+                        <div class="headline-card">
+                            <a href="<%= article.getUrl()%>" target="_blank"><%= article.getTitle()%></a><br/>
+                            <div class="meta"><%= article.getSource()%> | <%= article.getPublishedDate()%></div>
+                        </div>
+                        <% } %>
                     </div>
                 </div>
 
+                <!-- Grouped News -->
+                <div class="card news-by-source">
+                    <h2><i class="fa-solid fa-layer-group"></i> More News by Source</h2>
 
-
-            </div>
-
-            <!-- Top Headlines -->
-            <div class="section">
-                <h2><i class="fas fa-globe"></i> Top Headlines</h2>
-                <div class="headlines">
-                    <% for (NewsBean.NewsArticle article : articles) {%>
-                    <div class="headline-card">
-                        <a href="<%= article.getUrl()%>" target="_blank"><%= article.getTitle()%></a><br/>
-                        <div class="meta"><%= article.getSource()%> | <%= article.getPublishedDate()%></div>
-                    </div>
-                    <% } %>
-                </div>
-            </div>
-
-            <!-- Grouped News -->
-            <div class="card news-by-source">
-                <h2><i class="fa-solid fa-layer-group"></i> More News by Source</h2>
-
-                <div class="source-tabs" id="tab-container">
-                    <% int i = 0;
+                    <div class="source-tabs" id="tab-container">
+                        <% int i = 0;
                         for (String source : grouped.keySet()) {%>
-                    <div class="source-tab <%= (i == 0 ? "active" : "")%>" 
-                         onclick="showSource('<%= source.replaceAll(" ", "")%>')" 
-                         data-source="<%= source.replaceAll(" ", "")%>">
-                        <%= source%>
+                        <div class="source-tab <%= (i == 0 ? "active" : "")%>" 
+                             onclick="showSource('<%= source.replaceAll(" ", "")%>')" 
+                             data-source="<%= source.replaceAll(" ", "")%>">
+                            <%= source%>
+                        </div>
+                        <% i++;
+                        } %>
+                    </div>
+
+                    <% i = 0;
+                        for (Map.Entry<String, List<NewsBean.NewsArticle>> entry : grouped.entrySet()) {
+                            String sourceId = entry.getKey().replaceAll(" ", "");
+                    %>
+                    <div class="source-content <%= (i == 0 ? "active" : "")%>" id="<%= sourceId%>">
+                        <h3><%= entry.getKey()%></h3>
+                        <div class="source-articles">
+                            <ul>
+                                <% for (NewsBean.NewsArticle article : entry.getValue()) {%>
+                                <li>
+                                    <a href="<%= article.getUrl()%>" target="_blank"><%= article.getTitle()%></a>
+                                    <span class="meta">(<%= article.getPublishedDate()%>)</span>
+                                </li>
+                                <% } %>
+                            </ul>
+                        </div>
                     </div>
                     <% i++;
-                        } %>
-                </div>
-
-                <% i = 0;
-                    for (Map.Entry<String, List<NewsBean.NewsArticle>> entry : grouped.entrySet()) {
-                        String sourceId = entry.getKey().replaceAll(" ", "");
-                %>
-                <div class="source-content <%= (i == 0 ? "active" : "")%>" id="<%= sourceId%>">
-                    <h3><%= entry.getKey()%></h3>
-                    <div class="source-articles">
-                        <ul>
-                            <% for (NewsBean.NewsArticle article : entry.getValue()) {%>
-                            <li>
-                                <a href="<%= article.getUrl()%>" target="_blank"><%= article.getTitle()%></a>
-                                <span class="meta">(<%= article.getPublishedDate()%>)</span>
-                            </li>
-                            <% } %>
-                        </ul>
-                    </div>
-                </div>
-                <% i++;
                     }%>
-            </div>
+                </div>
 
-            <!-- Back Button -->
-            <form action="index.jsp">
-                <input type="submit" value="⏪ Back to Home" class="back-btn" />
-            </form>
+<!--                 Back Button 
+                <form action="index.jsp">
+                    <input type="submit" value="⏪ Back to Home" class="back-btn" />
+                </form>-->
+            </div>
         </div>
         <!-- JS for tab switching -->
         <script>
@@ -164,6 +165,6 @@
                 }
             }
         </script>
-
+        <jsp:include page="footer.jsp" />
     </body>
 </html>
